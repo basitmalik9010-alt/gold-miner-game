@@ -314,13 +314,13 @@ function stopAutoMining() {
 }
 const toggleBtn = document.getElementById('toggle-mining-btn');
 
+toggleBtn.addEventListener('click', () => {
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
 
-   if (gameState.isAutoMiningActive) {
+    if (gameState.isAutoMiningActive) {
         toggleBtn.innerText = "Auto-Mining: ON";
-        gameState.refillCount++;
         
-        clearInterval(autoMiningInterval); 
+        clearInterval(autoMiningInterval);
         autoMiningInterval = setInterval(() => {
             if (gameState.energy > 0) {
                 gameState.coins += 1;
@@ -333,5 +333,6 @@ const toggleBtn = document.getElementById('toggle-mining-btn');
         }, 500);
     } else {
         stopAutoMining();
+        toggleBtn.innerText = "Auto-Mining: OFF";
     }
 });
