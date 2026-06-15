@@ -3,32 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gold Miner Pro - Hamster Edition</title>
+    <title>Gold Miner Pro - CEO Edition</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <!-- Top Status Bar -->
         <header class="game-header">
             <div class="user-profile">
                 <div class="avatar-fallback">🐹</div>
                 <div class="user-meta">
                     <h3>Basit Bhaiya</h3>
-                    <span class="league-badge">👑 CEO League</span>
+                    <span class="league-badge" id="league-name">👑 CEO League (Level 1)</span>
                 </div>
             </div>
-            <button class="wallet-connect-btn" onclick="alert('TON Connect Initialized!')">💎 TON Connect</button>
+            <button class="settings-trigger-btn" id="open-settings-btn">⚙️</button>
         </header>
 
-        <!-- Top Stats Tracker -->
         <div class="global-crypto-stats">
             <div class="crypto-stat-box">
                 <span class="c-label">Earn per tap</span>
-                <span class="c-value text-gold">🔨 +1</span>
+                <span class="c-value text-gold" id="earn-per-tap-txt">🔨 +1</span>
             </div>
             <div class="crypto-stat-box border-center">
-                <span class="c-label">Coins to level up</span>
-                <span class="c-value text-blue">1.5K</span>
+                <span class="c-label">To Level Up</span>
+                <span class="c-value text-blue" id="next-level-val">5,000</span>
             </div>
             <div class="crypto-stat-box">
                 <span class="c-label">Profit per hour</span>
@@ -36,9 +34,8 @@
             </div>
         </div>
 
-        <!-- Dynamic Content Router Hub -->
         <main class="content-router">
-            <!-- SECTION 1: MINING ENGINE TAB -->
+            
             <section id="mining-tab" class="router-section active">
                 <div class="balance-display">
                     <div class="coin-row">
@@ -46,22 +43,20 @@
                         <span id="coin-balance">0</span>
                     </div>
                     <div class="level-progress-container">
-                        <span class="level-text">Level 1/10</span>
+                        <span class="level-text" id="level-num-txt">Level 1/10</span>
                         <div class="progress-track">
-                            <div class="progress-bar" style="width: 10%;"></div>
+                            <div class="progress-bar" id="level-progress-bar" style="width: 0%;"></div>
                         </div>
-                        <span class="progress-percent">10%</span>
+                        <span class="progress-percent" id="level-percent-txt">0%</span>
                     </div>
                 </div>
 
-                <!-- Core Tap Engine Area -->
                 <div class="mining-theater">
                     <button class="crystal-core" id="tap-target-btn">
                         <div class="inner-gem">🐹</div>
                     </button>
                 </div>
 
-                <!-- Footer Energy Pool -->
                 <div class="energy-dock">
                     <div class="energy-status">
                         <span>🔋</span>
@@ -73,52 +68,95 @@
                 </div>
             </section>
 
-            <!-- SECTION 2: MINE CARDS / UPGRADES TAB -->
             <section id="upgrades-tab" class="router-section">
-                <h3 class="section-title">Upgrade Ventures</h3>
+                <h3 class="section-title">Upgrade Crypto Ventures</h3>
                 <div class="upgrades-grid">
                     <div class="upgrade-card">
-                        <h4>P2P Trader Guild</h4>
-                        <p style="color:#27ae60; font-size:12px; margin:4px 0;">+15 PPH</p>
+                        <span class="card-icon">📈</span>
+                        <h4>P2P Guild</h4>
+                        <p class="card-gain">+15 PPH</p>
                         <button class="buy-card-btn" id="btn-buy-p2p">Cost: 200 🪙</button>
                     </div>
                     <div class="upgrade-card">
-                        <h4>TON Node Setup</h4>
-                        <p style="color:#27ae60; font-size:12px; margin:4px 0;">+60 PPH</p>
+                        <span class="card-icon">🖥️</span>
+                        <h4>TON Node</h4>
+                        <p class="card-gain">+60 PPH</p>
                         <button class="buy-card-btn" id="btn-buy-node">Cost: 800 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">🤖</span>
+                        <h4>AI Bot Trader</h4>
+                        <p class="card-gain">+180 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-aibot">Cost: 3,000 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">⛏️</span>
+                        <h4>BTC Farm</h4>
+                        <p class="card-gain">+500 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-btcfarm">Cost: 10,000 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">🚀</span>
+                        <h4>Meme Launch</h4>
+                        <p class="card-gain">+1,200 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-meme">Cost: 35,000 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">🏦</span>
+                        <h4>Staking Hub</h4>
+                        <p class="card-gain">+3,000 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-staking">Cost: 100,000 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">🛸</span>
+                        <h4>Web3 Studio</h4>
+                        <p class="card-gain">+7,500 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-web3">Cost: 250,000 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">💎</span>
+                        <h4>Liquidity Pool</h4>
+                        <p class="card-gain">+18,000 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-liquidity">Cost: 800,000 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">🌌</span>
+                        <h4>DeFi Layer 2</h4>
+                        <p class="card-gain">+45,000 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-layer2">Cost: 2,500,000 🪙</button>
+                    </div>
+                    <div class="upgrade-card">
+                        <span class="card-icon">👑</span>
+                        <h4>CEO Meta Office</h4>
+                        <p class="card-gain">+110,000 PPH</p>
+                        <button class="buy-card-btn" id="btn-buy-meta">Cost: 7,000,000 🪙</button>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 3: REFER & EARN (FRIENDS) -->
-            <section id="friends-tab" class="router-section">
-                <h3 class="section-title">Invite Friends</h3>
-                <input type="text" readonly value="https://t.me/miner_bot?start=basit" style="width:100%; padding:10px; margin-top:10px; background:#151a24; color:white; border:1px solid #222b3c; border-radius:8px;">
-                <button onclick="alert('Link Copied!')" style="width:100%; background:#2f80ed; color:white; padding:10px; border:none; border-radius:8px; margin-top:8px; font-weight:bold; cursor:pointer;">Copy Referral Link</button>
-            </section>
-
-            <!-- SECTION 4: AD EARNING ENGINE -->
-            <section id="ads-tab" class="router-section">
-                <h3 class="section-title">Sponsored Ads Station</h3>
-                <div class="ad-network-card">
-                    <h4>Premium Video Ad Stream</h4>
-                    <p style="color:orange; font-size:12px; font-weight:bold; margin:4px 0;">Reward: +5,000 COINS</p>
-                    <button class="launch-ad-btn" id="watch-ad-btn-1">⚡ Launch Ad Stream</button>
+            <section id="rewards-tab" class="router-section">
+                <h3 class="section-title">Daily Rewards Calendar</h3>
+                <p class="section-subtitle">Claim daily free coin multipliers to grow your empire fast!</p>
+                <div class="daily-reward-box">
+                    <div class="reward-banner">📅 Day 1 Claim</div>
+                    <div class="reward-amount">+5,000 Coins</div>
+                    <button class="claim-reward-btn" id="claim-daily-btn">Claim Free Reward</button>
                 </div>
             </section>
 
-            <!-- SECTION 5: WALLET -->
-            <section id="wallet-tab" class="router-section">
-                <h3 class="section-title">TON Wallet Payout</h3>
-                <div class="withdrawal-card" style="margin-top:15px;">
-                    <h1 id="withdrawal-display-balance" style="color:orange; margin:8px 0;">0</h1>
-                    <input type="text" placeholder="Enter TON Address">
-                    <button class="payout-btn" onclick="alert('Payout Request Sent!')">Initialize TON Payout</button>
+            <section id="ads-tab" class="router-section">
+                <h3 class="section-title">Sponsored Ads Station</h3>
+                <p class="section-subtitle">Watch interactive video nodes to inject immediate funding.</p>
+                <div class="ad-network-card">
+                    <div class="ad-meta">
+                        <h4>Premium High-Yield Stream</h4>
+                        <span class="ad-reward-tag">+5,000 COINS</span>
+                    </div>
+                    <button class="launch-ad-btn" id="watch-ad-btn-1">⚡ Launch Ad Stream</button>
                 </div>
             </section>
         </main>
 
-        <!-- Navigation Matrix Fixed Footer Deck -->
         <nav class="navigation-deck">
             <button class="nav-link active" data-target="mining-tab">
                 <span class="nav-icon">⛏️</span><span>MINING</span>
@@ -126,19 +164,80 @@
             <button class="nav-link" data-target="upgrades-tab">
                 <span class="nav-icon">📊</span><span>CARDS</span>
             </button>
-            <button class="nav-link" data-target="friends-tab">
-                <span class="nav-icon">👬</span><span>FRIENDS</span>
+            <button class="nav-link" data-target="rewards-tab">
+                <span class="nav-icon">🎁</span><span>REWARDS</span>
             </button>
             <button class="nav-link" data-target="ads-tab">
                 <span class="nav-icon">📺</span><span>EARN ADS</span>
             </button>
-            <button class="nav-link" data-target="wallet-tab">
-                <span class="nav-icon">💼</span><span>WALLET</span>
-            </button>
         </nav>
+
+        <div class="settings-modal" id="settings-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>⚙️ System Settings</h3>
+                    <button class="close-modal-btn" id="close-settings-btn">✖</button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="setting-row">
+                        <span>🎵 Background Music Loop</span>
+                        <button class="toggle-btn active" id="toggle-bg-music">ON</button>
+                    </div>
+                    <div class="setting-row">
+                        <span>🔊 Interactive Tap Sounds</span>
+                        <button class="toggle-btn active" id="toggle-tap-sound">ON</button>
+                    </div>
+                    
+                    <hr class="menu-hr">
+
+                    <div class="setting-wallet-box">
+                        <h4>💎 TON Connect Ecosystem</h4>
+                        <button class="wallet-btn-real" id="ton-connect-trigger">Connect TON Wallet</button>
+                    </div>
+
+                    <hr class="menu-hr">
+
+                    <div class="refer-system-box">
+                        <div class="refer-banner-img">🚀 REWARDS HUB</div>
+                        <h4>Invite Friends & Earn Big!</h4>
+                        <p class="refer-steps">Dost join karega dono ko +5,000 free coins milenge.</p>
+                        
+                        <div class="social-share-grid">
+                            <a href="#" class="share-btn whatsapp" id="share-wa">WhatsApp</a>
+                            <a href="#" class="share-btn telegram" id="share-tg">Telegram</a>
+                            <a href="#" class="share-btn twitter" id="share-tw">Twitter</a>
+                        </div>
+                        <div class="copy-link-row">
+                            <input type="text" id="refer-link-input" readonly value="https://t.me/GoldMinerTap_Bot?start=basit">
+                            <button id="copy-link-btn">Copy</button>
+                        </div>
+                    </div>
+
+                    <hr class="menu-hr">
+
+                    <div class="about-project-section">
+                        <h4>ℹ️ About Gold Miner Pro</h4>
+                        <p><strong>Maksad kya hai?</strong> Yeh ek decentralized Web3 community building app hai jismein log crypto businesses seekhte hain.</p>
+                        <p><strong>Paise Kaise Milenge?</strong> Jab aap 'Earn Ads' par click karte hain, toh premium networks ad broadcast karte hain. Is monetization se hone wala real profit aage chalkar airdrop liquidity pools ke zariye directly users ke TON wallet mein distribute kiya jayega.</p>
+                    </div>
+
+                    <hr class="menu-hr">
+
+                    <div class="wallet-coming-soon-card">
+                        <h2>💼 TON WITHDRAWAL</h2>
+                        <div class="glow-badge">COMING SOON</div>
+                        <p>Smart-contract based auto distribution terminal is currently under development.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- External Script Connection Line -->
+    <audio id="bg-audio-player" loop src="https://assets.mixkit.co/active_storage/sfx/123/123-200.wav" preload="auto"></audio>
+    <audio id="tap-audio-player" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-200.wav" preload="auto"></audio>
+
     <script src="script.js"></script>
 </body>
 </html>
