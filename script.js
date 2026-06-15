@@ -310,6 +310,7 @@ let autoMiningInterval = null;
 function stopAutoMining() {
     gameState.isAutoMiningActive = false;
     toggleBtn.innerText = "Auto-Mining: OFF";
+    toggleBtn.classList.remove('active'); // Glow effect hat jayega
     clearInterval(autoMiningInterval);
 }
 const toggleBtn = document.getElementById('toggle-mining-btn');
@@ -336,13 +337,7 @@ toggleBtn.addEventListener('click', () => {
     } else {
         stopAutoMining();
     }
-});
-
-// stopAutoMining function ko bhi yahan check kar lein
-function stopAutoMining() {
-    gameState.isAutoMiningActive = false;
-    toggleBtn.innerText = "Auto-Mining: OFF";
-    toggleBtn.classList.remove('active'); // Glow effect OFF
-    clearInterval(autoMiningInterval);
-}
-});
+} else {
+            stopAutoMining();
+        }
+    }); // Sirf ek baar yahan band hoga
