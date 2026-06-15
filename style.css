@@ -582,3 +582,33 @@ body {
     user-select: none;
     -webkit-user-select: none;
 }
+toggleBtn.addEventListener('click', () => {
+    gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
+
+    if (gameState.isAutoMiningActive) {
+        toggleBtn.innerText = "Auto-Mining: ON";
+        toggleBtn.classList.add('active'); // Gold Glow on karega
+        
+        clearInterval(autoMiningInterval);
+        autoMiningInterval = setInterval(() => {
+            if (gameState.energy > 0) {
+                gameState.coins += 1;
+                gameState.energy -= 1;
+                updateDOMDisplay();
+            } else {
+                stopAutoMining();
+                alert("Energy depleted! Auto-Mining stopped.");
+            }
+        }, 500);
+    } else {
+        stopAutoMining();
+    }
+});
+
+// stopAutoMining function mein bhi ye line jodni hai taaki OFF hote hi glow hat jaye
+function stopAutoMining() {
+    gameState.isAutoMiningActive = false;
+    toggleBtn.innerText = "Auto-Mining: OFF";
+    toggleBtn.classList.remove('active'); // Glow off karega
+    clearInterval(autoMiningInterval);
+}
