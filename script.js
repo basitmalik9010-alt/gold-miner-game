@@ -307,6 +307,11 @@ function loadGameProgress() {
 }
 // --- Auto-Mining & Ad Refill System ---
 let autoMiningInterval = null;
+function stopAutoMining() {
+    gameState.isAutoMiningActive = false;
+    toggleBtn.innerText = "Auto-Mining: OFF";
+    clearInterval(autoMiningInterval);
+}
 const toggleBtn = document.getElementById('toggle-mining-btn');
 
 toggleBtn.addEventListener('click', () => {
