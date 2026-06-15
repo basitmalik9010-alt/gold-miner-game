@@ -337,7 +337,4 @@ toggleBtn.addEventListener('click', () => {
     } else {
         stopAutoMining();
     }
-} else {
-            stopAutoMining();
-        }
-    }); // Sirf ek baar yahan band hoga
+});
