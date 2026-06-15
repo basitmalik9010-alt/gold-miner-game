@@ -583,3 +583,29 @@ body {
     -webkit-user-select: none;
 }
 
+/* Button ka normal design */
+#toggle-mining-btn {
+    padding: 15px 30px;
+    font-size: 16px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Jab button "active" class ke saath ho (yani Auto-Mining ON ho) */
+#toggle-mining-btn.active {
+    background: linear-gradient(45deg, #ffd700, #ff8c00);
+    box-shadow: 0 0 20px #ffd700;
+    color: black;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
