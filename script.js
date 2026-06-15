@@ -315,18 +315,30 @@ function stopAutoMining() {
 const toggleBtn = document.getElementById('toggle-mining-btn');
 
 toggleBtn.addEventListener('click', () => {
-    if (typeof gameState.refillCount === 'undefined') gameState.refillCount = 0;
+    // Sirf Auto-Mining ki state ko ON/OFF toggle karein
+    gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
 
-    // Limit check: 3 baar ki limit
-    if (!gameState.isAutoMiningActive && gameState.refillCount >= 3) {
-        let watchAd = confirm("Daily limit reached! Watch an Ad to refill 3 more times?");
-        if (watchAd) {
-            gameState.refillCount = 0; 
-            alert("Daily limit reset! You can mine 3 more times.");
-        } else {
-            return;
-        }
+    if (gameState.isAutoMiningActive) {
+        toggleBtn.innerText = "Auto-Mining: ON";
+        
+        // Mining shuru karein
+        clearInterval(autoMiningInterval);
+        autoMiningInterval = setInterval(() => {
+            if (gameState.energy > 0) {
+                gameState.coins += 1;
+                gameState.energy -= 1;
+                updateDOMDisplay();
+            } else {
+                stopAutoMining();
+                alert("Energy depleted! Auto-Mining stopped.");
+            }
+        }, 500);
+    } else {
+        // Mining band karein
+        stopAutoMining();
+        toggleBtn.innerText = "Auto-Mining: OFF";
     }
+});
 
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
 
