@@ -261,8 +261,8 @@ function initSocialShareSystem() {
 
 // --- IMMERSIVE CINEMATIC AUDIO MATRIX SYSTEM ---
 function initAudioChannels() {
-    // Pehli click par browser ka audio restriction lock tutega
-    document.body.addEventListener('click', () => {
+    // Pure document par click track hoga, isse restriction 100% toot jayegi
+    document.addEventListener('click', () => {
         controlBackgroundLoop();
     }, { once: true });
 }
