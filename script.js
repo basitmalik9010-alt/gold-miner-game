@@ -314,11 +314,13 @@ function stopAutoMining() {
 }
 const toggleBtn = document.getElementById('toggle-mining-btn');
 
+// Naya clean event listener
 toggleBtn.addEventListener('click', () => {
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
 
     if (gameState.isAutoMiningActive) {
         toggleBtn.innerText = "Auto-Mining: ON";
+        toggleBtn.classList.add('active'); // Glow effect ON
         
         clearInterval(autoMiningInterval);
         autoMiningInterval = setInterval(() => {
@@ -333,6 +335,14 @@ toggleBtn.addEventListener('click', () => {
         }, 500);
     } else {
         stopAutoMining();
-        toggleBtn.innerText = "Auto-Mining: OFF";
     }
+});
+
+// stopAutoMining function ko bhi yahan check kar lein
+function stopAutoMining() {
+    gameState.isAutoMiningActive = false;
+    toggleBtn.innerText = "Auto-Mining: OFF";
+    toggleBtn.classList.remove('active'); // Glow effect OFF
+    clearInterval(autoMiningInterval);
+}
 });
