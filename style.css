@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* Badiya Blue Cartoon Theme */
+    font-family: 'Arial', sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+}
+
+.game-container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 25px;
+    border-radius: 30px; /* More cartoonish round borders */
+    border: 4px solid #f1c40f; /* Golden border */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    width: 90%;
+    max-width: 380px;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #f1c40f;
+    text-shadow: 2px 2px #d35400;
+}
+
+.score-board {
+    font-size: 24px;
+    font-weight: bold;
+    background: #2ecc71;
+    border: 3px solid #27ae60;
+    padding: 8px 25px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.tap-area {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+    position: relative; /* Floating numbers ke liye zaroori hai */
+}
+
+.miner-character {
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, #f39c12, #e67e22);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 25px #f1c40f;
+    transition: transform 0.05s ease-out;
+}
+
+/* Jhatke wala animation */
+.miner-character:active {
+    transform: scale(0.9);
+}
+
+.gold-coin {
+    width: 110px;
+    height: 110px;
+    background: #f1c40f;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+}
+
+.cartoon-avatar {
+    font-size: 55px; /* Cartoon character ka size */
+}
+
+/* 🔥 Upar udne wale (+0.1) ka design aur animation */
+.floating-number {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    color: #f1c40f;
+    text-shadow: 2px 2px #000;
+    pointer-events: none;
+    animation: floatUpAndFade 0.6s ease-out forwards;
+}
+
+@keyframes floatUpAndFade {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-120px) scale(1.2); /* Coin se upar ki taraf udna */
+        opacity: 0;
+    }
+}
+
+.btn {
+    background: #e74c3c;
+    border: 3px solid #c0392b;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#wallet-input {
+    width: 85%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 2px solid #555;
+    background: #111;
+    color: white;
+    text-align: center;
+}
+
+.btn-withdraw {
+    background: #9b59b6;
+    border: 3px solid #8e44ad;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 95%;
+}
+.hidden { display: none; }

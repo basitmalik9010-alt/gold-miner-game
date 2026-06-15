@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Miner Tap</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Gold Miner Tap ⛏️🐻</h1>
+            <div class="score-board">Gold Coins: <span id="coin-count">0.0</span></div>
+        </div>
+
+        <!-- Main Character & Tap Area -->
+        <div class="tap-area">
+            <div class="miner-character" id="miner-btn">
+                <!-- Hamara cute cartoon character coin ke andar -->
+                <div class="gold-coin">
+                    <span class="cartoon-avatar">🐻‍❄️</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boost Section -->
+        <div class="boost-section">
+            <button id="boost-btn" class="btn">🚀 Get 3x Boost (Watch Ad)</button>
+            <p id="boost-timer" class="hidden">Boost Active: <span id="timer-sec">30</span>s</p>
+        </div>
+
+        <hr style="margin: 20px 0; border: 1px dashed #555;">
+
+        <!-- Withdrawal Section -->
+        <div class="withdraw-section">
+            <h3>💰 Withdrawal Wallet</h3>
+            <p style="font-size: 12px; color: #aaa;">Minimum Withdraw: 5,000 Coins</p>
+            <input type="text" id="wallet-input" placeholder="Enter UPI ID or TON Wallet">
+            <button id="withdraw-btn" class="btn-withdraw">Withdraw Money</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
