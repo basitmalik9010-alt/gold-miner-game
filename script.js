@@ -261,7 +261,10 @@ function initSocialShareSystem() {
 
 // --- IMMERSIVE CINEMATIC AUDIO MATRIX SYSTEM ---
 function initAudioChannels() {
-    controlBackgroundLoop();
+    // Pehli click par browser ka audio restriction lock tutega
+    document.body.addEventListener('click', () => {
+        controlBackgroundLoop();
+    }, { once: true });
 }
 
 function controlBackgroundLoop() {
