@@ -570,3 +570,14 @@ body {
     box-shadow: 0 0 10px rgba(242,153,74,0.4);
 }
 .wallet-coming-soon-card p { font-size: 11px; color: var(--text-muted); }
+/* Remove ugly box highlight on click/tap for all elements */
+* {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+}
+
+/* Optional: Make the main coin/hamster scale nicely on tap */
+.coin-container img, .nav-link, button {
+    user-select: none;
+    -webkit-user-select: none;
+}
