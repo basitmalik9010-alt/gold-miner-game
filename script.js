@@ -305,3 +305,22 @@ function loadGameProgress() {
     if(localStorage.getItem('gm_lastClaim')) gameState.lastDailyClaim = parseInt(localStorage.getItem('gm_lastClaim'));
     updateDOMDisplay();
 }
+// Auto-Mining Toggle Logic
+const toggleBtn = document.getElementById('toggle-mining-btn');
+
+toggleBtn.addEventListener('click', () => {
+    // Agar pehle se define nahi hai, toh false set karein
+    if (typeof gameState.isAutoMiningActive === 'undefined') {
+        gameState.isAutoMiningActive = false;
+    }
+
+    // Toggle karein (True se False, False se True)
+    gameState.isAutoMiningActive = !gameState.isAutoMiningActive; 
+    
+    // UI update karein
+    if (gameState.isAutoMiningActive) {
+        toggleBtn.innerText = "Auto-Mining: ON";
+    } else {
+        toggleBtn.innerText = "Auto-Mining: OFF";
+    }
+});
