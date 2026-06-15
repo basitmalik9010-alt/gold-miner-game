@@ -314,32 +314,6 @@ function stopAutoMining() {
 }
 const toggleBtn = document.getElementById('toggle-mining-btn');
 
-toggleBtn.addEventListener('click', () => {
-    // Sirf Auto-Mining ki state ko ON/OFF toggle karein
-    gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
-
-    if (gameState.isAutoMiningActive) {
-        toggleBtn.innerText = "Auto-Mining: ON";
-        
-        // Mining shuru karein
-        clearInterval(autoMiningInterval);
-        autoMiningInterval = setInterval(() => {
-            if (gameState.energy > 0) {
-                gameState.coins += 1;
-                gameState.energy -= 1;
-                updateDOMDisplay();
-            } else {
-                stopAutoMining();
-                alert("Energy depleted! Auto-Mining stopped.");
-            }
-        }, 500);
-    } else {
-        // Mining band karein
-        stopAutoMining();
-        toggleBtn.innerText = "Auto-Mining: OFF";
-    }
-});
-
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
 
    if (gameState.isAutoMiningActive) {
