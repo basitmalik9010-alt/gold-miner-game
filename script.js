@@ -305,42 +305,10 @@ function loadGameProgress() {
     if(localStorage.getItem('gm_lastClaim')) gameState.lastDailyClaim = parseInt(localStorage.getItem('gm_lastClaim'));
     updateDOMDisplay();
 }
-// --- Final Auto-Mining & Ad Refill System ---
-let autoMiningInterval = null;
+// Simple Toggle Logic
 const toggleBtn = document.getElementById('toggle-mining-btn');
-
 toggleBtn.addEventListener('click', () => {
-    if (typeof gameState.refillCount === 'undefined') gameState.refillCount = 0;
-
-    // Limit check
-    if (!gameState.isAutoMiningActive && gameState.refillCount >= 3) {
-        let watchAd = confirm("Daily limit reached! Watch an Ad to refill 3 more times?");
-        if (watchAd) {
-            alert("Watching Ad... 30 seconds wait.");
-            gameState.refillCount = 0; // Limit reset
-            alert("Daily limit reset! You can mine 3 more times.");
-        }
-        return;
-    }
-
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
-
-    if (gameState.isAutoMiningActive) {
-        toggleBtn.innerText = "Auto-Mining: ON";
-        gameState.refillCount++; 
-        autoMiningInterval = setInterval(() => {
-            if (gameState.energy > 0) {
-                gameState.coins += 1;
-                gameState.energy -= 1;
-                updateDOMDisplay();
-            } else {
-                toggleBtn.click();
-                alert("Energy depleted! Auto-Mining stopped.");
-            }
-        }, 500); // 500ms = 2 coins per second
-    } else {
-        toggleBtn.innerText = "Auto-Mining: OFF";
-        clearInterval(autoMiningInterval);
-    }
+    toggleBtn.innerText = gameState.isAutoMiningActive ? "Auto-Mining: ON" : "Auto-Mining: OFF";
 });
 });
