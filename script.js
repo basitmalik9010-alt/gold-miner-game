@@ -305,10 +305,44 @@ function loadGameProgress() {
     if(localStorage.getItem('gm_lastClaim')) gameState.lastDailyClaim = parseInt(localStorage.getItem('gm_lastClaim'));
     updateDOMDisplay();
 }
-// Simple Toggle Logic
+// --- Auto-Mining & Ad Refill System ---
+let autoMiningInterval = null;
 const toggleBtn = document.getElementById('toggle-mining-btn');
+
 toggleBtn.addEventListener('click', () => {
+    if (typeof gameState.refillCount === 'undefined') gameState.refillCount = 0;
+
+    // Limit check: 3 baar ki limit
+    if (!gameState.isAutoMiningActive && gameState.refillCount >= 3) {
+        let watchAd = confirm("Daily limit reached! Watch an Ad to refill 3 more times?");
+        if (watchAd) {
+            gameState.refillCount = 0; 
+            alert("Daily limit reset! You can mine 3 more times.");
+        } else {
+            return;
+        }
+    }
+
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
-    toggleBtn.innerText = gameState.isAutoMiningActive ? "Auto-Mining: ON" : "Auto-Mining: OFF";
+
+    if (gameState.isAutoMiningActive) {
+        toggleBtn.innerText = "Auto-Mining: ON";
+        gameState.refillCount++; 
+        
+        autoMiningInterval = setInterval(() => {
+            if (gameState.energy > 0) {
+                gameState.coins += 1;
+                gameState.energy -= 1;
+                updateDOMDisplay();
+           } else {
+        stopAutoMining(); // Bas yahan ye function call karein
+        alert("Energy depleted! Auto-Mining stopped.");
+    }
+            }
+        }, 500); // Speed: 2 coins per second
+    } else {
+        toggleBtn.innerText = "Auto-Mining: OFF";
+        clearInterval(autoMiningInterval);
+    }
 });
 
