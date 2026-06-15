@@ -111,6 +111,9 @@ function initMiningEngine() {
     const tapTarget = document.getElementById('tap-target-btn');
     
     tapTarget.addEventListener('click', (e) => {
+        if (gameState.isAutoMiningActive) {
+        return;
+    }
         if (gameState.energy >= gameState.earnPerTap) {
             gameState.coins += gameState.earnPerTap;
             gameState.energy -= gameState.earnPerTap;
