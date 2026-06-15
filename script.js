@@ -330,24 +330,22 @@ toggleBtn.addEventListener('click', () => {
 
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
 
-    if (gameState.isAutoMiningActive) {
+   if (gameState.isAutoMiningActive) {
         toggleBtn.innerText = "Auto-Mining: ON";
-        gameState.refillCount++; 
+        gameState.refillCount++;
         
+        clearInterval(autoMiningInterval); 
         autoMiningInterval = setInterval(() => {
             if (gameState.energy > 0) {
                 gameState.coins += 1;
                 gameState.energy -= 1;
                 updateDOMDisplay();
-           } else {
-        stopAutoMining(); // Bas yahan ye function call karein
-        alert("Energy depleted! Auto-Mining stopped.");
-    }
+            } else {
+                stopAutoMining();
+                alert("Energy depleted! Auto-Mining stopped.");
             }
-        }, 500); // Speed: 2 coins per second
+        }, 500);
     } else {
-        toggleBtn.innerText = "Auto-Mining: OFF";
-        clearInterval(autoMiningInterval);
+        stopAutoMining();
     }
 });
-
