@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Core Engine Loops
     setInterval(processPassiveEarnings, 1000);
-    setInterval(regenerateEnergyPool, 1500);
+    setInterval(regenerateEnergyPool, 3000);
 });
 
 // --- UI REFRESH TERMINAL ---
