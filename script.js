@@ -311,4 +311,4 @@ toggleBtn.addEventListener('click', () => {
     gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
     toggleBtn.innerText = gameState.isAutoMiningActive ? "Auto-Mining: ON" : "Auto-Mining: OFF";
 });
-});
+
