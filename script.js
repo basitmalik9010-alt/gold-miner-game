@@ -1,22 +1,22 @@
-// --- Telegram Auto-Name Fetcher ---
 window.addEventListener('load', () => {
-    // 1. Telegram WebApp object ko check karein
-    const tg = window.Telegram.WebApp;
-    tg.ready();
+    console.log("Game Loaded!"); // Agar ye console mein dikhe, to script chal rahi hai
     
-    // 2. Data check karein - thoda delay dekar taaki Telegram load ho jaye
-    setTimeout(() => {
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            const userName = tg.initDataUnsafe.user.first_name;
-            const nameElement = document.getElementById('user-name');
-            if (nameElement) {
-                nameElement.innerText = userName;
-            }
-        } else {
-            // Agar phir bhi nahi mila, toh Fallback
-            document.getElementById('user-name').innerText = "Basit Bhaiya";
-        }
-    }, 500); // 500ms ka wait logic
+    const nameElement = document.getElementById('user-name');
+    const tg = window.Telegram.WebApp;
+    
+    if (!nameElement) {
+        console.error("Error: 'user-name' ID wala HTML element nahi mila!");
+    } else {
+        console.log("HTML element mil gaya!");
+    }
+
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        nameElement.innerText = tg.initDataUnsafe.user.first_name;
+        console.log("Naam mil gaya:", tg.initDataUnsafe.user.first_name);
+    } else {
+        nameElement.innerText = "Basit Bhaiya";
+        console.log("Telegram data nahi mila, fallback use kiya.");
+    }
 });
 // --- CORE GAME ENGINE STATE TERMINAL ---
 let gameState = {
