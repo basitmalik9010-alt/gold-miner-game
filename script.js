@@ -63,6 +63,7 @@ function updateDOMDisplay() {
     document.getElementById('pph-txt').innerText = `⚡ +${gameState.pph.toLocaleString()}`;
     document.getElementById('earn-per-tap-txt').innerText = `🔨 +${gameState.earnPerTap}`;
     document.getElementById('energy-counter').innerText = `${gameState.energy} / ${gameState.maxEnergy}`;
+    document.getElementById('current-score').innerText = Math.floor(gameState.coins).toLocaleString();
     
     // Level & Progress Bar Calculation System (Fixed Unfreeze Logic)
     let currentTarget = getTargetForLevel(gameState.level);
@@ -338,3 +339,22 @@ toggleBtn.addEventListener('click', () => {
         stopAutoMining();
     }
 });
+// 1. Rank Buttons ka logic (Toggle active class)
+const rankButtons = document.querySelectorAll('.rank-btn');
+
+rankButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        // Pehle sabse 'active' hatao
+        document.querySelector('.rank-btn.active').classList.remove('active');
+        // Phir clicked button par 'active' lagao
+        this.classList.add('active');
+    });
+});
+
+// 2. Score update karne ka function (Jab bhi user click karega)
+function updateLiveScore(newScore) {
+    const scoreElement = document.getElementById('current-score');
+    if (scoreElement) {
+        scoreElement.innerText = newScore.toLocaleString();
+    }
+}
