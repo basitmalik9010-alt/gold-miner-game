@@ -31,14 +31,13 @@ body {
 
 .game-container {
     width: 100vw;
-    height: 100vh;
+    height: 100vh; /* Puri screen ki height */
     max-width: 480px;
-    background: linear-gradient(180deg, #0e131f 0%, #05070a 100%);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Scroll hona band ho jayega */
     position: relative;
-    border-left: 1px solid #1a2333;
-    border-right: 1px solid #1a2333;
 }
 
 .game-header {
@@ -194,12 +193,13 @@ body {
 }
 
 .mining-theater {
+    flex: 1; /* Bachi hui puri jagah le lega */
     display: flex;
-    justify-content: center; /* Horizontally center */
-    align-items: center;     /* Vertically center */
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    flex-grow: 1;            /* Ye important hai, bachi hui jagah lega */
-    min-height: 240px;
+    min-height: 0; /* Yeh scroll rokne ke liye bahut zaruri hai */
+    overflow: hidden;
 }
 
 /* 100% Seamless Transparent Circle Touch for Target */
@@ -612,3 +612,25 @@ body {
     100% { transform: scale(1); }
 }
 
+.user-dashboard {
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0e131f; /* Container ke background jaisa */
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box; /* Taaki padding se width na badhe */
+    flex-shrink: 0;         /* Yeh dashboard ko dabne nahi dega */
+}
+
+.rank-nav button {
+    background: #2f80ed;
+    border: none;
+    color: white;
+    padding: 5px 12px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
