@@ -102,7 +102,7 @@ function updateDOMDisplay() {
         
         document.getElementById('level-progress-bar').style.width = `${percentage}%`;
         document.getElementById('level-percent-txt').innerText = `${Math.floor(percentage)}%`;
-        document.getElementById('league-name').innerText = `👑 CEO League (Level ${gameState.level})`;
+        document.getElementById('league-name').innerText = `👑 CEO Basit Malik (Level ${gameState.level})`;
     }
     
     saveGameProgress();
