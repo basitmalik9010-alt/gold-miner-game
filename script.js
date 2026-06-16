@@ -1,3 +1,35 @@
+// 1. Data capture karne ka function
+let myRankData = { name: "Basit Bhaiya", id: null };
+
+function fetchTelegramUser() {
+    const tg = window.Telegram.WebApp;
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        myRankData.name = tg.initDataUnsafe.user.first_name;
+        myRankData.id = tg.initDataUnsafe.user.id;
+    }
+}
+
+// 2. Page load hote hi ye chalega
+fetchTelegramUser();
+
+// 3. Leaderboard update function
+function updateRankDisplay(rank) {
+    const nameDisplay = document.getElementById('rank-name');
+    if (rank === "1") {
+        nameDisplay.innerText = myRankData.name;
+    } else {
+        nameDisplay.innerText = "Unknown";
+    }
+}
+
+// 4. Buttons par click event
+document.querySelectorAll('.rank-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelector('.rank-btn.active').classList.remove('active');
+        this.classList.add('active');
+        updateRankDisplay(this.getAttribute('data-rank'));
+    });
+});
 // --- CORE GAME ENGINE STATE TERMINAL ---
 let gameState = {
     coins: 0,
