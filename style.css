@@ -196,10 +196,10 @@ body {
 
 .mining-theater {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Horizontally center */
+    align-items: center;     /* Vertically center */
     width: 100%;
+    flex-grow: 1;            /* Ye important hai, bachi hui jagah lega */
     min-height: 240px;
 }
 
