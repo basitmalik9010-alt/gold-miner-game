@@ -23,9 +23,9 @@ body {
     color: var(--text-white);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; <-- Ye hata diya */
     align-items: center;
-    min-height: 100vh;
+    height: 100vh; /* min-height ki jagah height */
     overflow: hidden;
 }
 
