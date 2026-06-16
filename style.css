@@ -612,25 +612,42 @@ body {
     100% { transform: scale(1); }
 }
 
-.user-dashboard {
-    width: 100%;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #0e131f; /* Container ke background jaisa */
-    color: white;
-    font-size: 14px;
-    box-sizing: border-box; /* Taaki padding se width na badhe */
-    flex-shrink: 0;         /* Yeh dashboard ko dabne nahi dega */
+/* Purana code hatane ke baad, sirf ye naya style rakhein */
+.top-stats-container {
+    width: 90%;
+    margin: 10px auto;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.rank-nav button {
-    background: #2f80ed;
-    border: none;
-    color: white;
-    padding: 5px 12px;
-    margin-left: 5px;
-    border-radius: 5px;
+.stats-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.rank-selector {
+    display: flex;
+    gap: 10px;
+}
+
+.rank-btn {
+    background: #1a2333;
+    color: #888;
+    border: 1px solid #2f80ed;
+    padding: 8px 20px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.rank-btn.active {
+    background: #2f80ed;
+    color: white;
+    box-shadow: 0 0 10px #2f80ed;
 }
