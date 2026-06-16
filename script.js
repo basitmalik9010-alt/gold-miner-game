@@ -1,34 +1,22 @@
-// 1. Data capture karne ka function
-let myRankData = { name: "Basit Bhaiya", id: null };
-
-function fetchTelegramUser() {
+// --- Telegram Auto-Name Fetcher ---
+window.addEventListener('load', () => {
+    // 1. Telegram WebApp object ko check karein
     const tg = window.Telegram.WebApp;
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        myRankData.name = tg.initDataUnsafe.user.first_name;
-        myRankData.id = tg.initDataUnsafe.user.id;
-    }
-}
-
-// 2. Page load hote hi ye chalega
-fetchTelegramUser();
-
-// 3. Leaderboard update function
-function updateRankDisplay(rank) {
-    const nameDisplay = document.getElementById('rank-name');
-    if (rank === "1") {
-        nameDisplay.innerText = myRankData.name;
-    } else {
-        nameDisplay.innerText = "Unknown";
-    }
-}
-
-// 4. Buttons par click event
-document.querySelectorAll('.rank-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelector('.rank-btn.active').classList.remove('active');
-        this.classList.add('active');
-        updateRankDisplay(this.getAttribute('data-rank'));
-    });
+    tg.ready();
+    
+    // 2. Data check karein - thoda delay dekar taaki Telegram load ho jaye
+    setTimeout(() => {
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const userName = tg.initDataUnsafe.user.first_name;
+            const nameElement = document.getElementById('user-name');
+            if (nameElement) {
+                nameElement.innerText = userName;
+            }
+        } else {
+            // Agar phir bhi nahi mila, toh Fallback
+            document.getElementById('user-name').innerText = "Basit Bhaiya";
+        }
+    }, 500); // 500ms ka wait logic
 });
 // --- CORE GAME ENGINE STATE TERMINAL ---
 let gameState = {
