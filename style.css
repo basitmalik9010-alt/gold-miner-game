@@ -609,3 +609,21 @@ body {
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
 }
+.mining-theater {
+    display: flex;
+    justify-content: center; /* Khargosh ko horizontally center karega */
+    align-items: center;     /* Vertically center karega */
+    height: 400px;           /* Aap screen ke hisaab se ise badal sakte hain */
+    width: 100%;
+}
+
+#tap-target-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+#tap-target-btn:active {
+    transform: scale(0.95); /* Tap karte waqt halka sa dabega */
+}
