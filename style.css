@@ -651,3 +651,32 @@ body {
     color: white;
     box-shadow: 0 0 10px #2f80ed;
 }
+/* Floating Number Animation for Tapping */
+.floating-text {
+    position: absolute;
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px #ffcc00, 0 0 20px #ff9900;
+    pointer-events: none;
+    animation: floatUpAndFade 0.8s ease-out forwards;
+    z-index: 9999;
+    font-family: 'Arial', sans-serif;
+}
+
+@keyframes floatUpAndFade {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-120px) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Ensure the mining theater can hold absolute elements */
+.mining-theater {
+    position: relative;
+    overflow: visible;
+}
