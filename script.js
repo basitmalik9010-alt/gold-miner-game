@@ -139,7 +139,7 @@ function initMiningEngine() {
     const tapTarget = document.getElementById('tap-target-btn');
     
     if (tapTarget) {
-        tapTarget.addEventListener('click', (e) => {
+       tapTarget.addEventListener('click', (e) => {
             if (gameState.isAutoMiningActive) {
                 return;
             }
@@ -147,11 +147,30 @@ function initMiningEngine() {
                 gameState.coins += gameState.earnPerTap;
                 gameState.energy -= gameState.earnPerTap;
                 
+                // --- FLOATING TEXT ANIMATION GENERATOR ---
+                const floatingTxt = document.createElement('div');
+                floatingTxt.classList.add('floating-text');
+                floatingTxt.innerText = `+${gameState.earnPerTap}`;
+                
+                const rect = tapTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                floatingTxt.style.left = `${x}px`;
+                floatingTxt.style.top = `${y}px`;
+                
+                tapTarget.appendChild(floatingTxt);
+                
+                setTimeout(() => {
+                    floatingTxt.remove();
+                }, 800);
+                // -----------------------------------------
+
                 triggerAudioEffect('tap');
                 checkLevelUpCondition();
                 updateDOMDisplay();
             } else {
-                alert("Urgent: Energy depleted! Wait for recovery loop.");
+                alert("Energy Depleted: Please wait for energy recovery.");
             }
         });
     }
