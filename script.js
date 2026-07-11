@@ -363,8 +363,11 @@ function initUpgradesMarket() {
 
 // --- THE HARDCORE COMBO CHECK ENGINE LOGIC ---
 function checkCardForDailyCombo(cardId) {
-    generateDailyCombo(); 
+    // Ye safety check hai taaki game freeze na ho
+    const slotElement0 = document.getElementById('combo-slot-0');
+    if (!slotElement0) return; 
 
+    generateDailyCombo();
     if (isComboClaimed) return;
 
     // RULE 1: Agar card galat hai (secret combo ka hissa nahi hai) -> PROGRESS TOTAL RESET!
