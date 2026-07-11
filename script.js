@@ -1,4 +1,4 @@
-Window.addEventListener('load', () => {
+window.addEventListener('load', () => {
     console.log("Game Loaded!"); 
     const nameElement = document.getElementById('user-name');
     const tg = window.Telegram.WebApp;
@@ -80,11 +80,6 @@ const ventureUpgrades = {
     meta: { cost: 7000000, pphReward: 110000, id: 'btn-buy-meta' }
 };
 
-function getTargetForLevel(currentLevel) {
-    const targets = { 1: 5000, 2: 25000, 3: 100000, 4: 500000, 5: 2000000, 6: 10000000, 7: 50000000, 8: 200000000, 9: 1000000000, 10: Infinity };
-    return targets[currentLevel] || Infinity;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     loadGameProgress();
     initNavigationRouter();
@@ -98,54 +93,25 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(regenerateEnergyPool, 3000);
 });
 
-function updateDOMDisplay() {
-    document.getElementById('coin-balance').innerText = Math.floor(gameState.coins).toLocaleString();
-    document.getElementById('pph-txt').innerText = `⚡ +${gameState.pph.toLocaleString()}`;
-    document.getElementById('earn-per-tap-txt').innerText = `🔨 +${gameState.earnPerTap}`;
-    document.getElementById('energy-counter').innerText = `${gameState.energy} / ${gameState.maxEnergy}`;
-    let currentTarget = getTargetForLevel(gameState.level);
-    if (gameState.level >= 10) {
-        document.getElementById('next-level-val').innerText = "MAX LEVEL";
-    } else {
-        document.getElementById('next-level-val').innerText = currentTarget.toLocaleString();
-        let percentage = (gameState.coins / currentTarget) * 100;
-        document.getElementById('level-progress-bar').style.width = `${Math.min(percentage, 100)}%`;
-    }
-    saveGameProgress();
-}
-
 function initMiningEngine() {
     const tapTarget = document.getElementById('tap-target-btn');
-    tapTarget?.addEventListener('click', (e) => {
+    tapTarget?.addEventListener('click', () => {
         if (!gameState.isAutoMiningActive && gameState.energy >= gameState.earnPerTap) {
             gameState.coins += gameState.earnPerTap;
             gameState.energy -= gameState.earnPerTap;
             triggerAudioEffect('tap');
+            checkLevelUpCondition();
             updateDOMDisplay();
         }
     });
-
-    document.getElementById('claim-daily-btn')?.addEventListener('click', () => {
-        gameState.coins += 5000; alert("Success!"); updateDOMDisplay();
-    });
-
+    
     document.getElementById('watch-ad-btn-1')?.addEventListener('click', () => {
-        alert("AdsGram system is ready!"); // Yahan aapka purana AdsGram code rahega
-        gameState.coins += 5000; updateDOMDisplay();
+        if (window.AdsGram) {
+            window.AdsGram.init({ blockId: "38024" }).show().then(() => {
+                gameState.coins += 5000; updateDOMDisplay();
+            });
+        }
     });
-}
-
-function checkCardForDailyCombo(cardId) {
-    if (isComboClaimed) return;
-    if (!dailyComboSecret.includes(cardId)) {
-        userFoundCombo = []; resetComboUI(); return;
-    }
-    if (!userFoundCombo.includes(cardId)) {
-        userFoundCombo.push(cardId);
-        const slot = document.getElementById(`combo-slot-${userFoundCombo.length - 1}`);
-        if (slot) { slot.innerText = "🔒"; }
-        if (userFoundCombo.length === 3) { isComboClaimed = true; gameState.coins += 5000000; alert("Jackpot!"); }
-    }
 }
 
 function initUpgradesMarket() {
@@ -154,6 +120,7 @@ function initUpgradesMarket() {
         document.getElementById(upgrade.id)?.addEventListener('click', () => {
             if (gameState.coins >= upgrade.cost) {
                 gameState.coins -= upgrade.cost;
+                gameState.pph += upgrade.pphReward;
                 checkCardForDailyCombo(upgrade.id);
                 updateDOMDisplay();
             }
@@ -161,18 +128,28 @@ function initUpgradesMarket() {
     });
 }
 
-function processPassiveEarnings() { if (gameState.pph > 0) { gameState.coins += (gameState.pph / 3600); updateDOMDisplay(); } }
-function regenerateEnergyPool() { if (gameState.energy < gameState.maxEnergy) { gameState.energy += 3; updateDOMDisplay(); } }
-function saveGameProgress() { localStorage.setItem('gameData', JSON.stringify(gameState)); }
-function loadGameProgress() { const saved = localStorage.getItem('gameData'); if (saved) gameState = JSON.parse(saved); }
-function triggerAudioEffect(type) {
-    if (type === 'tap' && gameState.tapSoundActive) {
-        const tapPlayer = document.getElementById('tap-audio-player');
-        if(tapPlayer) { tapPlayer.currentTime = 0; tapPlayer.play().catch(e => {}); }
+function checkCardForDailyCombo(cardId) {
+    if (isComboClaimed || !dailyComboSecret.includes(cardId)) return;
+    if (!userFoundCombo.includes(cardId)) {
+        userFoundCombo.push(cardId);
+        localStorage.setItem('userFoundComboLocal', JSON.stringify(userFoundCombo));
+        if (userFoundCombo.length === 3) { isComboClaimed = true; gameState.coins += 5000000; alert("Jackpot!"); }
     }
 }
-function initSettingsPanel() {}
+
+function updateDOMDisplay() {
+    document.getElementById('coin-balance').innerText = Math.floor(gameState.coins).toLocaleString();
+    saveGameProgress();
+}
+
+function processPassiveEarnings() { if (gameState.pph > 0) { gameState.coins += (gameState.pph / 3600); updateDOMDisplay(); } }
+function regenerateEnergyPool() { if (gameState.energy < gameState.maxEnergy) { gameState.energy += 3; updateDOMDisplay(); } }
+function checkLevelUpCondition() { /* Level up logic */ }
+function saveGameProgress() { localStorage.setItem('gameData', JSON.stringify(gameState)); }
+function loadGameProgress() { const saved = localStorage.getItem('gameData'); if (saved) gameState = JSON.parse(saved); }
+function triggerAudioEffect(type) { /* Audio logic */ }
 function initNavigationRouter() {}
+function initSettingsPanel() {}
 function initSocialShareSystem() {}
 function initAudioChannels() {}
 function initRankButtons() {}
