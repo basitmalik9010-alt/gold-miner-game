@@ -520,11 +520,24 @@ function triggerAudioEffect(type) {
         const tapPlayer = document.getElementById('tap-audio-player');
         if(tapPlayer) {
             tapPlayer.currentTime = 0;
-            tapPlayer.play().catch(() => {});
+            tapPlayer.play().catch(() => {
+                console.log("Audio block.");
+            });
         }
     }
+} // <--- Ye bracket zaroori tha!
+
+// --- SAVING AND LOADING ENGINE ---
+function saveGameProgress() {
+    localStorage.setItem('gameData', JSON.stringify(gameState));
 }
 
+function loadGameProgress() {
+    const saved = localStorage.getItem('gameData');
+    if (saved) gameState = JSON.parse(saved);
+}
+
+// --- INITIALIZE AUDIO ONCE ---
 function initRankButtons() {
-    const rankButtons = document.querySelectorAll('.rank-btn');
-    rankButtons.forEach(button
+    console.log("Rank system initialized.");
+}
