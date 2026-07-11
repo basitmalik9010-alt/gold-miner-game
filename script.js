@@ -202,7 +202,7 @@ function initMiningEngine() {
             } catch (error) {
                 adBtn.disabled = false;
                 adBtn.innerText = "⚡ Launch Ad Stream";
-                alert("Ad network load nahi ho paya. Kripya thodi der baad prayas karein.");
+                alert("the ad network could not be loaded. Please try again later..");
                 console.error("AdsGram Initialization Error:", error);
             }
         });
