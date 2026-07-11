@@ -1,3 +1,4 @@
+const AdController = window.AdsGram.init({ blockId: "38024" });
 window.addEventListener('load', () => {
     console.log("Game Loaded!"); // Agar ye console mein dikhe, to script chal rahi hai
     
