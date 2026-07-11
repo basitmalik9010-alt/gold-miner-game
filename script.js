@@ -162,20 +162,25 @@ function initMiningEngine() {
         }
     });
 
-    // Sponsored Ads Simulation Setup
+// Real AdsGram Integration Setup
     document.getElementById('watch-ad-btn-1').addEventListener('click', () => {
         const adButton = document.getElementById('watch-ad-btn-1');
         adButton.disabled = true;
-        adButton.innerText = "⏳ Connecting Ad Network...";
+        adButton.innerText = "⏳ Loading Ad...";
         
-        setTimeout(() => {
+        AdController.show().then((result) => {
             gameState.coins += 5000;
             adButton.disabled = false;
             adButton.innerText = "⚡ Launch Ad Stream";
-            alert("Ad Stream Completed: +5,000 Coins funded successfully!");
+            alert("Success: +5,000 Coins added to your global reserve!");
             checkLevelUpCondition();
             updateDOMDisplay();
-        }, 5000);
+        }).catch((result) => {
+            adButton.disabled = false;
+            adButton.innerText = "⚡ Launch Ad Stream";
+            alert("Ad poora nahi dekha gaya, isliye reward nahi mila.");
+            console.log("AdsGram Error:", result);
+        });
     });
 }
 
