@@ -138,68 +138,75 @@ let autoMiningInterval = null;
 function initMiningEngine() {
     const tapTarget = document.getElementById('tap-target-btn');
     
-    tapTarget.addEventListener('click', (e) => {
-        if (gameState.isAutoMiningActive) {
-            return;
-        }
-        if (gameState.energy >= gameState.earnPerTap) {
-            gameState.coins += gameState.earnPerTap;
-            gameState.energy -= gameState.earnPerTap;
-            
-            triggerAudioEffect('tap');
-            checkLevelUpCondition();
-            updateDOMDisplay();
-        } else {
-            alert("Urgent: Energy depleted! Wait for recovery loop.");
-        }
-    });
+    if (tapTarget) {
+        tapTarget.addEventListener('click', (e) => {
+            if (gameState.isAutoMiningActive) {
+                return;
+            }
+            if (gameState.energy >= gameState.earnPerTap) {
+                gameState.coins += gameState.earnPerTap;
+                gameState.energy -= gameState.earnPerTap;
+                
+                triggerAudioEffect('tap');
+                checkLevelUpCondition();
+                updateDOMDisplay();
+            } else {
+                alert("Urgent: Energy depleted! Wait for recovery loop.");
+            }
+        });
+    }
 
     // Daily Rewards Claim Implementation
-    document.getElementById('claim-daily-btn').addEventListener('click', () => {
-        const currentTime = Date.now();
-        if (currentTime - gameState.lastDailyClaim >= 86400000 || gameState.lastDailyClaim === 0) {
-            gameState.coins += 5000;
-            gameState.lastDailyClaim = currentTime;
-            alert("Success: +5,000 Coins added to your global reserve!");
-            checkLevelUpCondition();
-            updateDOMDisplay();
-        } else {
-            alert("Access Denied: Next reward node available tomorrow!");
-        }
-    });
+    const claimBtn = document.getElementById('claim-daily-btn');
+    if (claimBtn) {
+        claimBtn.addEventListener('click', () => {
+            const currentTime = Date.now();
+            if (currentTime - gameState.lastDailyClaim >= 86400000 || gameState.lastDailyClaim === 0) {
+                gameState.coins += 5000;
+                gameState.lastDailyClaim = currentTime;
+                alert("Success: +5,000 Coins added to your global reserve!");
+                checkLevelUpCondition();
+                updateDOMDisplay();
+            } else {
+                alert("Access Denied: Next reward node available tomorrow!");
+            }
+        });
+    }
 
     // Real AdsGram Integration Setup
-    document.getElementById('watch-ad-btn-1').addEventListener('click', () => {
-        const adButton = document.getElementById('watch-ad-btn-1');
-        adButton.disabled = true;
-        adButton.innerText = "⏳ Loading Ad...";
-        
-        try {
-            if (window.AdsGram) {
-                const AdController = window.AdsGram.init({ blockId: "38024" });
-                AdController.show().then((result) => {
-                    gameState.coins += 5000;
-                    adButton.disabled = false;
-                    adButton.innerText = "⚡ Launch Ad Stream";
-                    alert("Success: +5,000 Coins added to your global reserve!");
-                    checkLevelUpCondition();
-                    updateDOMDisplay();
-                }).catch((result) => {
-                    adButton.disabled = false;
-                    adButton.innerText = "⚡ Launch Ad Stream";
-                    alert("Ad poora nahi dekha gaya, isliye reward nahi mila.");
-                    console.log("AdsGram Error:", result);
-                });
-            } else {
-                throw new Error("AdsGram script not loaded yet");
+    const adBtn = document.getElementById('watch-ad-btn-1');
+    if (adBtn) {
+        adBtn.addEventListener('click', () => {
+            adBtn.disabled = true;
+            adBtn.innerText = "⏳ Loading Ad...";
+            
+            try {
+                if (window.AdsGram) {
+                    const AdController = window.AdsGram.init({ blockId: "38024" });
+                    AdController.show().then((result) => {
+                        gameState.coins += 5000;
+                        adBtn.disabled = false;
+                        adBtn.innerText = "⚡ Launch Ad Stream";
+                        alert("Success: +5,000 Coins added to your global reserve!");
+                        checkLevelUpCondition();
+                        updateDOMDisplay();
+                    }).catch((result) => {
+                        adBtn.disabled = false;
+                        adBtn.innerText = "⚡ Launch Ad Stream";
+                        alert("Ad poora nahi dekha gaya, isliye reward nahi mila.");
+                        console.log("AdsGram Error:", result);
+                    });
+                } else {
+                    throw new Error("AdsGram script not loaded yet");
+                }
+            } catch (error) {
+                adBtn.disabled = false;
+                adBtn.innerText = "⚡ Launch Ad Stream";
+                alert("Ad network load nahi ho paya. Kripya thodi der baad prayas karein.");
+                console.error("AdsGram Initialization Error:", error);
             }
-        } catch (error) {
-            adButton.disabled = false;
-            adButton.innerText = "⚡ Launch Ad Stream";
-            alert("Ad network load nahi ho paya. Kripya thodi der baad prayas karein.");
-            console.error("AdsGram Initialization Error:", error);
-        }
-    });
+        });
+    }
 
     // Auto-Mining Button Logic
     const toggleBtn = document.getElementById('toggle-mining-btn');
@@ -280,6 +287,7 @@ function regenerateEnergyPool() {
     }
 }
 
+// --- LEVEL UP ENGINE ---
 function checkLevelUpCondition() {
     let target = getTargetForLevel(gameState.level);
     while (gameState.coins >= target && gameState.level < 10) {
@@ -298,8 +306,8 @@ function initSettingsPanel() {
     const toggleTap = document.getElementById('toggle-tap-sound');
     const tonTrigger = document.getElementById('ton-connect-trigger');
 
-    if(openBtn) openBtn.addEventListener('click', () => overlay.classList.add('active'));
-    if(closeBtn) closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+    if(openBtn && overlay) openBtn.addEventListener('click', () => overlay.classList.add('active'));
+    if(closeBtn && overlay) closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
     
     if(toggleMusic) {
         toggleMusic.addEventListener('click', () => {
@@ -342,10 +350,12 @@ function initSocialShareSystem() {
     if(copyBtn) {
         copyBtn.addEventListener('click', () => {
             const copyInput = document.getElementById('refer-link-input');
-            copyInput.select();
-            copyInput.setSelectionRange(0, 99999);
-            document.execCommand("copy");
-            alert("Referral URL successfully locked to clipboard!");
+            if (copyInput) {
+                copyInput.select();
+                copyInput.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                alert("Referral URL successfully locked to clipboard!");
+            }
         });
     }
 }
@@ -357,7 +367,6 @@ function initAudioChannels() {
     }, { once: true });
 }
 
-// --- AUDIO CHANNEL MATRIX HUB ---
 function controlBackgroundLoop() {
     const bgPlayer = document.getElementById('bg-audio-player');
     if (bgPlayer && gameState.bgMusicActive) {
