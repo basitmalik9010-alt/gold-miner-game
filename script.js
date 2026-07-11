@@ -1,53 +1,55 @@
-window.addEventListener('load', () => {
-    console.log("Game Loaded!"); // Agar ye console mein dikhe, to script chal rahi hai
+Window.addEventListener('load', () => {
+    Console.log("Game Loaded!"); 
     
-    const nameElement = document.getElementById('user-name');
-    const tg = window.Telegram.WebApp;
+    Const nameElement = document.getElementById('user-name');
+    Const tg = window.Telegram.WebApp;
     
-    if (!nameElement) {
-        console.error("Error: 'user-name' ID wala HTML element nahi mila!");
+    If (!nameElement) {
+        Console.error("Error: 'user-name' ID wala HTML element nahi mila!");
     } else {
-        console.log("HTML element mil gaya!");
+        Console.log("HTML element mil gaya!");
     }
 
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        nameElement.innerText = tg.initDataUnsafe.user.first_name;
-        console.log("Naam mil gaya:", tg.initDataUnsafe.user.first_name);
+    If (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        NameElement.innerText = tg.initDataUnsafe.user.first_name;
+        Console.log("Naam mil gaya:", tg.initDataUnsafe.user.first_name);
     } else {
-        nameElement.innerText = "Basit Bhaiya";
-        console.log("Telegram data nahi mila, fallback use kiya.");
+        NameElement.innerText = "Basit Bhaiya";
+        Console.log("Telegram data nahi mila, fallback use kiya.");
     }
 });
+
 // --- CORE GAME ENGINE STATE TERMINAL ---
 let gameState = {
-    coins: 0,
-    pph: 0,
-    level: 1,
-    energy: 1000,
-    maxEnergy: 1000,
-    earnPerTap: 1,
-    tapSoundActive: true,
-    bgMusicActive: true,
-    lastDailyClaim: 0
+    Coins: 0,
+    Pph: 0,
+    Level: 1,
+    Energy: 1000,
+    MaxEnergy: 1000,
+    EarnPerTap: 1,
+    TapSoundActive: true,
+    BgMusicActive: true,
+    LastDailyClaim: 0,
+    IsAutoMiningActive: false
 };
 
 // --- VENTURES MATRIX REVENUE DEFINITIONS (10-20 Configuration) ---
 const ventureUpgrades = {
-    p2p: { cost: 200, pphReward: 15, id: 'btn-buy-p2p' },
-    node: { cost: 800, pphReward: 60, id: 'btn-buy-node' },
-    aibot: { cost: 3000, pphReward: 180, id: 'btn-buy-aibot' },
-    btcfarm: { cost: 10000, pphReward: 500, id: 'btn-buy-btcfarm' },
-    meme: { cost: 35000, pphReward: 1200, id: 'btn-buy-meme' },
-    staking: { cost: 100000, pphReward: 3000, id: 'btn-buy-staking' },
-    web3: { cost: 250000, pphReward: 7500, id: 'btn-buy-web3' },
-    liquidity: { cost: 800000, pphReward: 18000, id: 'btn-buy-liquidity' },
-    layer2: { cost: 2500000, pphReward: 45000, id: 'btn-buy-layer2' },
-    meta: { cost: 7000000, pphReward: 110000, id: 'btn-buy-meta' }
+    P2p: { cost: 200, pphReward: 15, id: 'btn-buy-p2p' },
+    Node: { cost: 800, pphReward: 60, id: 'btn-buy-node' },
+    Aibot: { cost: 3000, pphReward: 180, id: 'btn-buy-aibot' },
+    Btcfarm: { cost: 10000, pphReward: 500, id: 'btn-buy-btcfarm' },
+    Meme: { cost: 35000, pphReward: 1200, id: 'btn-buy-meme' },
+    Staking: { cost: 100000, pphReward: 3000, id: 'btn-buy-staking' },
+    Web3: { cost: 250000, pphReward: 7500, id: 'btn-buy-web3' },
+    Liquidity: { cost: 800000, pphReward: 18000, id: 'btn-buy-liquidity' },
+    Layer2: { cost: 2500000, pphReward: 45000, id: 'btn-buy-layer2' },
+    Meta: { cost: 7000000, pphReward: 110000, id: 'btn-buy-meta' }
 };
 
 // --- DYNAMIC LEVEL CONFIGURATION CAP ---
 function getTargetForLevel(currentLevel) {
-    const targets = {
+    Const targets = {
         1: 5000,
         2: 25000,
         3: 100000,
@@ -59,160 +61,203 @@ function getTargetForLevel(currentLevel) {
         9: 1000000000,
         10: Infinity
     };
-    return targets[currentLevel] || Infinity;
+    Return targets[currentLevel] || Infinity;
 }
 
 // --- INITIALIZER TERMINAL ---
 document.addEventListener("DOMContentLoaded", () => {
-    loadGameProgress();
-    initNavigationRouter();
-    initMiningEngine();
-    initUpgradesMarket();
-    initSettingsPanel();
-    initSocialShareSystem();
-    initAudioChannels();
+    LoadGameProgress();
+    InitNavigationRouter();
+    InitMiningEngine();
+    InitUpgradesMarket();
+    InitSettingsPanel();
+    InitSocialShareSystem();
+    InitAudioChannels();
+    InitRankButtons();
     
     // Core Engine Loops
-    setInterval(processPassiveEarnings, 1000);
-    setInterval(regenerateEnergyPool, 3000);
+    SetInterval(processPassiveEarnings, 1000);
+    SetInterval(regenerateEnergyPool, 3000);
 });
 
 // --- UI REFRESH TERMINAL ---
 function updateDOMDisplay() {
-    document.getElementById('coin-balance').innerText = Math.floor(gameState.coins).toLocaleString();
-    document.getElementById('pph-txt').innerText = `⚡ +${gameState.pph.toLocaleString()}`;
-    document.getElementById('earn-per-tap-txt').innerText = `🔨 +${gameState.earnPerTap}`;
-    document.getElementById('energy-counter').innerText = `${gameState.energy} / ${gameState.maxEnergy}`;
-    document.getElementById('current-score').innerText = Math.floor(gameState.coins).toLocaleString();
+    Document.getElementById('coin-balance').innerText = Math.floor(gameState.coins).toLocaleString();
+    Document.getElementById('pph-txt').innerText = `⚡ +${gameState.pph.toLocaleString()}`;
+    Document.getElementById('earn-per-tap-txt').innerText = `🔨 +${gameState.earnPerTap}`;
+    Document.getElementById('energy-counter').innerText = `${gameState.energy} / ${gameState.maxEnergy}`;
     
-    // Level & Progress Bar Calculation System (Fixed Unfreeze Logic)
-    let currentTarget = getTargetForLevel(gameState.level);
-    if (gameState.level >= 10) {
-        document.getElementById('next-level-val').innerText = "MAX LEVEL";
-        document.getElementById('level-num-txt').innerText = "Level 10/10";
-        document.getElementById('level-progress-bar').style.width = "100%";
-        document.getElementById('level-percent-txt').innerText = "100%";
-        document.getElementById('league-name').innerText = `👑 Ultimate Emperor (Level 10)`;
-    } else {
-        document.getElementById('next-level-val').innerText = currentTarget.toLocaleString();
-        document.getElementById('level-num-txt').innerText = `Level ${gameState.level}/10`;
-        
-        let percentage = (gameState.coins / currentTarget) * 100;
-        if (percentage > 100) percentage = 100;
-        
-        document.getElementById('level-progress-bar').style.width = `${percentage}%`;
-        document.getElementById('level-percent-txt').innerText = `${Math.floor(percentage)}%`;
-        document.getElementById('league-name').innerText = `👑 CEO Basit Malik (Level ${gameState.level})`;
+    Const scoreElement = document.getElementById('current-score');
+    If (scoreElement) {
+        ScoreElement.innerText = Math.floor(gameState.coins).toLocaleString();
     }
     
-    saveGameProgress();
+    Let currentTarget = getTargetForLevel(gameState.level);
+    If (gameState.level >= 10) {
+        Document.getElementById('next-level-val').innerText = "MAX LEVEL";
+        Document.getElementById('level-num-txt').innerText = "Level 10/10";
+        Document.getElementById('level-progress-bar').style.width = "100%";
+        Document.getElementById('level-percent-txt').innerText = "100%";
+        Document.getElementById('league-name').innerText = `👑 Ultimate Emperor (Level 10)`;
+    } else {
+        Document.getElementById('next-level-val').innerText = currentTarget.toLocaleString();
+        Document.getElementById('level-num-txt').innerText = `Level ${gameState.level}/10`;
+        
+        Let percentage = (gameState.coins / currentTarget) * 100;
+        If (percentage > 100) percentage = 100;
+        
+        Document.getElementById('level-progress-bar').style.width = `${percentage}%`;
+        Document.getElementById('level-percent-txt').innerText = `${Math.floor(percentage)}%`;
+        Document.getElementById('league-name').innerText = `👑 CEO Basit Malik (Level ${gameState.level})`;
+    }
+    
+    SaveGameProgress();
 }
 
 // --- SECTION ROUTER HUB (4 Tabs Logic) ---
 function initNavigationRouter() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.router-section');
+    Const navLinks = document.querySelectorAll('.nav-link');
+    Const sections = document.querySelectorAll('.router-section');
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.forEach(nl => nl.classList.remove('active'));
-            sections.forEach(sec => sec.classList.remove('active'));
+    NavLinks.forEach(link => {
+        Link.addEventListener('click', () => {
+            NavLinks.forEach(nl => nl.classList.remove('active'));
+            Sections.forEach(sec => sec.classList.remove('active'));
 
-            link.classList.add('active');
-            const targetSection = link.getAttribute('data-target');
-            document.getElementById(targetSection).classList.add('active');
+            Link.classList.add('active');
+            Const targetSection = link.getAttribute('data-target');
+            Document.getElementById(targetSection).classList.add('active');
             
-            triggerAudioEffect('tap');
+            TriggerAudioEffect('tap');
         });
     });
 }
 
 // --- TAP ACTIVE ENGINE SYSTEM ---
 function initMiningEngine() {
-    const tapTarget = document.getElementById('tap-target-btn');
+    Const tapTarget = document.getElementById('tap-target-btn');
     
-    tapTarget.addEventListener('click', (e) => {
-        if (gameState.isAutoMiningActive) {
-        return;
-    }
-        if (gameState.energy >= gameState.earnPerTap) {
-            gameState.coins += gameState.earnPerTap;
-            gameState.energy -= gameState.earnPerTap;
+    TapTarget.addEventListener('click', (e) => {
+        If (gameState.isAutoMiningActive) {
+            Return;
+        }
+        If (gameState.energy >= gameState.earnPerTap) {
+            GameState.coins += gameState.earnPerTap;
+            GameState.energy -= gameState.earnPerTap;
             
-            triggerAudioEffect('tap');
-            checkLevelUpCondition();
-            updateDOMDisplay();
+            TriggerAudioEffect('tap');
+            CheckLevelUpCondition();
+            UpdateDOMDisplay();
         } else {
-            alert("Urgent: Energy depleted! Wait for recovery loop.");
+            Alert("Urgent: Energy depleted! Wait for recovery loop.");
         }
     });
 
     // Daily Rewards Claim Implementation
-    document.getElementById('claim-daily-btn').addEventListener('click', () => {
-        const currentTime = Date.now();
-        if (currentTime - gameState.lastDailyClaim >= 86400000 || gameState.lastDailyClaim === 0) {
-            gameState.coins += 5000;
-            gameState.lastDailyClaim = currentTime;
-            alert("Success: +5,000 Coins added to your global reserve!");
-            checkLevelUpCondition();
-            updateDOMDisplay();
+    Document.getElementById('claim-daily-btn').addEventListener('click', () => {
+        Const currentTime = Date.now();
+        If (currentTime - gameState.lastDailyClaim >= 86400000 || gameState.lastDailyClaim === 0) {
+            GameState.coins += 5000;
+            GameState.lastDailyClaim = currentTime;
+            Alert("Success: +5,000 Coins added to your global reserve!");
+            CheckLevelUpCondition();
+            UpdateDOMDisplay();
         } else {
-            alert("Access Denied: Next reward node available tomorrow!");
+            Alert("Access Denied: Next reward node available tomorrow!");
         }
     });
 
-// Real AdsGram Integration Setup (Safe Method)
-    document.getElementById('watch-ad-btn-1').addEventListener('click', () => {
-        const adButton = document.getElementById('watch-ad-btn-1');
-        adButton.disabled = true;
-        adButton.innerText = "⏳ Loading Ad...";
+    // Real AdsGram Integration Setup
+    Document.getElementById('watch-ad-btn-1').addEventListener('click', () => {
+        Const adButton = document.getElementById('watch-ad-btn-1');
+        AdButton.disabled = true;
+        AdButton.innerText = "⏳ Loading Ad...";
         
-        try {
-            // Click hone par safe initialization
-            const AdController = window.AdsGram.init({ blockId: "38024" });
-            
-            AdController.show().then((result) => {
-                gameState.coins += 5000;
-                adButton.disabled = false;
-                adButton.innerText = "⚡ Launch Ad Stream";
-                alert("Success: +5,000 Coins added to your global reserve!");
-                checkLevelUpCondition();
-                updateDOMDisplay();
-            }).catch((result) => {
-                adButton.disabled = false;
-                adButton.innerText = "⚡ Launch Ad Stream";
-                alert("Ad poora nahi dekha gaya, isliye reward nahi mila.");
-                console.log("AdsGram Error:", result);
-            });
+        Try {
+            If (window.AdsGram) {
+                Const AdController = window.AdsGram.init({ blockId: "38024" });
+                AdController.show().then((result) => {
+                    GameState.coins += 5000;
+                    AdButton.disabled = false;
+                    AdButton.innerText = "⚡ Launch Ad Stream";
+                    Alert("Success: +5,000 Coins added to your global reserve!");
+                    CheckLevelUpCondition();
+                    UpdateDOMDisplay();
+                }).catch((result) => {
+                    AdButton.disabled = false;
+                    AdButton.innerText = "⚡ Launch Ad Stream";
+                    Alert("Ad poora nahi dekha gaya, isliye reward nahi mila.");
+                    Console.log("AdsGram Error:", result);
+                });
+            } else {
+                Throw new Error("AdsGram script not loaded yet");
+            }
         } catch (error) {
-            adButton.disabled = false;
-            adButton.innerText = "⚡ Launch Ad Stream";
-            alert("Ad network load nahi ho paya. Kripya thodi der baad prayas karein.");
-            console.error("AdsGram Initialization Error:", error);
+            AdButton.disabled = false;
+            AdButton.innerText = "⚡ Launch Ad Stream";
+            Alert("Ad network load nahi ho paya. Kripya thodi der baad prayas karein.");
+            Console.error("AdsGram Initialization Error:", error);
         }
     });
+
+    // Auto-Mining Button Logic
+    Const toggleBtn = document.getElementById('toggle-mining-btn');
+    If (toggleBtn) {
+        ToggleBtn.addEventListener('click', () => {
+            GameState.isAutoMiningActive = !gameState.isAutoMiningActive;
+
+            If (gameState.isAutoMiningActive) {
+                ToggleBtn.innerText = "Auto-Mining: ON";
+                ToggleBtn.classList.add('active');
+                
+                ClearInterval(autoMiningInterval);
+                AutoMiningInterval = setInterval(() => {
+                    If (gameState.energy > 0) {
+                        GameState.coins += 1;
+                        GameState.energy -= 1;
+                        UpdateDOMDisplay();
+                    } else {
+                        StopAutoMining();
+                        Alert("Energy depleted! Auto-Mining stopped.");
+                    }
+                }, 500);
+            } else {
+                StopAutoMining();
+            }
+        });
+    }
+}
+
+Let autoMiningInterval = null;
+function stopAutoMining() {
+    GameState.isAutoMiningActive = false;
+    Const toggleBtn = document.getElementById('toggle-mining-btn');
+    If (toggleBtn) {
+        ToggleBtn.innerText = "Auto-Mining: OFF";
+        ToggleBtn.classList.remove('active');
+    }
+    ClearInterval(autoMiningInterval);
 }
 
 // --- VENTURES MARKET ENGINE ---
 function initUpgradesMarket() {
     Object.keys(ventureUpgrades).forEach(key => {
-        const upgrade = ventureUpgrades[key];
-        const btn = document.getElementById(upgrade.id);
+        Const upgrade = ventureUpgrades[key];
+        Const btn = document.getElementById(upgrade.id);
         
-        if (btn) {
-            btn.addEventListener('click', () => {
-                if (gameState.coins >= upgrade.cost) {
-                    gameState.coins -= upgrade.cost;
-                    gameState.pph += upgrade.pphReward;
+        If (btn) {
+            Btn.addEventListener('click', () => {
+                If (gameState.coins >= upgrade.cost) {
+                    GameState.coins -= upgrade.cost;
+                    GameState.pph += upgrade.pphReward;
                     
-                    // Cost multiplier escalation
-                    upgrade.cost = Math.floor(upgrade.cost * 1.5);
-                    btn.innerText = `Cost: ${upgrade.cost.toLocaleString()} 🪙`;
+                    Upgrade.cost = Math.floor(upgrade.cost * 1.5);
+                    Btn.innerText = `Cost: ${upgrade.cost.toLocaleString()} 🪙`;
                     
-                    alert(`Purchase Confirmed! PPH production enhanced by +${upgrade.pphReward}`);
-                    updateDOMDisplay();
+                    Alert(`Purchase Confirmed! PPH production enhanced by +${upgrade.pphReward}`);
+                    UpdateDOMDisplay();
                 } else {
-                    alert("Deficit: Insufficient coin liquidity to purchase upgrade.");
+                    Alert("Deficit: Insufficient coin liquidity to purchase upgrade.");
                 }
             });
         }
@@ -221,175 +266,142 @@ function initUpgradesMarket() {
 
 // --- AUTO RUN TIMERS CONTROL HUB ---
 function processPassiveEarnings() {
-    if (gameState.pph > 0) {
-        gameState.coins += (gameState.pph / 3600);
-        checkLevelUpCondition();
-        updateDOMDisplay();
+    If (gameState.pph > 0) {
+        GameState.coins += (gameState.pph / 3600);
+        CheckLevelUpCondition();
+        UpdateDOMDisplay();
     }
 }
 
 function regenerateEnergyPool() {
-    if (gameState.energy < gameState.maxEnergy) {
-        gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + 3);
-        updateDOMDisplay();
+    If (gameState.energy < gameState.maxEnergy) {
+        GameState.energy = Math.min(gameState.maxEnergy, gameState.energy + 3);
+        UpdateDOMDisplay();
     }
 }
 
 function checkLevelUpCondition() {
-    let target = getTargetForLevel(gameState.level);
-    while (gameState.coins >= target && gameState.level < 10) {
-        gameState.level++;
-        target = getTargetForLevel(gameState.level);
-        alert(`🎉 Congratulations Basit Bhaiya! You leveled up to Level ${gameState.level}!`);
+    Let target = getTargetForLevel(gameState.level);
+    While (gameState.coins >= target && gameState.level < 10) {
+        GameState.level++;
+        Target = getTargetForLevel(gameState.level);
+        Alert(`🎉 Congratulations Basit Bhaiya! You leveled up to Level ${gameState.level}!`);
     }
 }
 
 // --- SETTINGS PANEL CONTROL INTEREACE ---
 function initSettingsPanel() {
-    const overlay = document.getElementById('settings-overlay');
-    const openBtn = document.getElementById('open-settings-btn');
-    const closeBtn = document.getElementById('close-settings-btn');
-    const toggleMusic = document.getElementById('toggle-bg-music');
-    const toggleTap = document.getElementById('toggle-tap-sound');
-    const tonTrigger = document.getElementById('ton-connect-trigger');
+    Const overlay = document.getElementById('settings-overlay');
+    Const openBtn = document.getElementById('open-settings-btn');
+    Const closeBtn = document.getElementById('close-settings-btn');
+    Const toggleMusic = document.getElementById('toggle-bg-music');
+    Const toggleTap = document.getElementById('toggle-tap-sound');
+    Const tonTrigger = document.getElementById('ton-connect-trigger');
 
-    openBtn.addEventListener('click', () => overlay.classList.add('active'));
-    closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+    If(openBtn) openBtn.addEventListener('click', () => overlay.classList.add('active'));
+    If(closeBtn) closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
     
-    // Toggle Control Systems
-    toggleMusic.addEventListener('click', () => {
-        gameState.bgMusicActive = !gameState.bgMusicActive;
-        toggleMusic.classList.toggle('active', gameState.bgMusicActive);
-        toggleMusic.innerText = gameState.bgMusicActive ? "ON" : "OFF";
-        controlBackgroundLoop();
-    });
+    If(toggleMusic) {
+        ToggleMusic.addEventListener('click', () => {
+            GameState.bgMusicActive = !gameState.bgMusicActive;
+            ToggleMusic.classList.toggle('active', gameState.bgMusicActive);
+            ToggleMusic.innerText = gameState.bgMusicActive ? "ON" : "OFF";
+            ControlBackgroundLoop();
+        });
+    }
 
-    toggleTap.addEventListener('click', () => {
-        gameState.tapSoundActive = !gameState.tapSoundActive;
-        toggleTap.classList.toggle('active', gameState.tapSoundActive);
-        toggleTap.innerText = gameState.tapSoundActive ? "ON" : "OFF";
-    });
+    If(toggleTap) {
+        ToggleTap.addEventListener('click', () => {
+            GameState.tapSoundActive = !gameState.tapSoundActive;
+            ToggleTap.classList.toggle('active', gameState.tapSoundActive);
+            ToggleTap.innerText = gameState.tapSoundActive ? "ON" : "OFF";
+        });
+    }
 
-    // Real TON Connection Redirect Hook
-    tonTrigger.addEventListener('click', () => {
-        tonTrigger.innerText = "Connecting Tonkeeper...";
-        setTimeout(() => {
-            // Real TON Manifest payload redirect simulation string
-            window.location.href = "https://tonconnect.org"; 
-        }, 1200);
-    });
+    If(tonTrigger) {
+        TonTrigger.addEventListener('click', () => {
+            TonTrigger.innerText = "Connecting Tonkeeper...";
+            SetTimeout(() => {
+                Window.location.href = "https://tonconnect.org"; 
+            }, 1200);
+        });
+    }
 }
 
 // --- PROFESSIONAL MULTI-SOCIAL REFER LINKS DECK ---
 function initSocialShareSystem() {
-    const textMsg = encodeURIComponent("Gold Miner Pro join karo aur real TON tokens airdrop reward pao! +5,000 coins turant free: ");
-    const refLink = encodeURIComponent(document.getElementById('refer-link-input').value);
+    Const textMsg = encodeURIComponent("Gold Miner Pro join karo aur real TON tokens airdrop reward pao! +5,000 coins turant free: ");
+    Const referInput = document.getElementById('refer-link-input');
+    Const refLink = referInput ? EncodeURIComponent(referInput.value) : "";
 
-    document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${textMsg}${refLink}`;
-    document.getElementById('share-tg').href = `https://t.me/share/url?url=${refLink}&text=${textMsg}`;
-    document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?text=${textMsg}&url=${refLink}`;
+    If(document.getElementById('share-wa')) document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${textMsg}${refLink}`;
+    If(document.getElementById('share-tg')) document.getElementById('share-tg').href = `https://t.me/share/url?url=${refLink}&text=${textMsg}`;
+    If(document.getElementById('share-tw')) document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?text=${textMsg}&url=${refLink}`;
 
-    document.getElementById('copy-link-btn').addEventListener('click', () => {
-        const copyInput = document.getElementById('refer-link-input');
-        copyInput.select();
-        copyInput.setSelectionRange(0, 99999);
-        document.execCommand("copy");
-        alert("Referral URL successfully locked to clipboard!");
-    });
+    Const copyBtn = document.getElementById('copy-link-btn');
+    If(copyBtn) {
+        CopyBtn.addEventListener('click', () => {
+            Const copyInput = document.getElementById('refer-link-input');
+            CopyInput.select();
+            CopyInput.setSelectionRange(0, 99999);
+            Document.execCommand("copy");
+            Alert("Referral URL successfully locked to clipboard!");
+        });
+    }
 }
 
 // --- IMMERSIVE CINEMATIC AUDIO MATRIX SYSTEM ---
 function initAudioChannels() {
-    // Pure document par click track hoga, isse restriction 100% toot jayegi
-    document.addEventListener('click', () => {
-        controlBackgroundLoop();
+    Document.addEventListener('click', () => {
+        ControlBackgroundLoop();
     }, { once: true });
 }
 
 function controlBackgroundLoop() {
-    const bgPlayer = document.getElementById('bg-audio-player');
-    if (gameState.bgMusicActive) {
-        bgPlayer.volume = 0.2;
-        bgPlayer.play().catch(() => {
-            console.log("Audio contextual block: User interaction required first.");
+    Const bgPlayer = document.getElementById('bg-audio-player');
+    If (bgPlayer && gameState.bgMusicActive) {
+        BgPlayer.volume = 0.2;
+        BgPlayer.play().catch(() => {
+            Console.log("Audio contextual block: User interaction required first.");
         });
-    } else {
-        bgPlayer.pause();
+    } else if(bgPlayer) {
+        BgPlayer.pause();
     }
 }
 
 function triggerAudioEffect(type) {
-    if (type === 'tap' && gameState.tapSoundActive) {
-        const tapPlayer = document.getElementById('tap-audio-player');
-        tapPlayer.currentTime = 0;
-        tapPlayer.play().catch(() => {});
+    If (type === 'tap' && gameState.tapSoundActive) {
+        Const tapPlayer = document.getElementById('tap-audio-player');
+        If(tapPlayer) {
+            TapPlayer.currentTime = 0;
+            TapPlayer.play().catch(() => {});
+        }
     }
+}
+
+function initRankButtons() {
+    Const rankButtons = document.querySelectorAll('.rank-btn');
+    RankButtons.forEach(button => {
+        Button.addEventListener('click', function() {
+            Const activeBtn = document.querySelector('.rank-btn.active');
+            If(activeBtn) activeBtn.classList.remove('active');
+            This.classList.add('active');
+        });
+    });
 }
 
 // --- LOCAL STORAGE PERSISTENCE SYSTEMS ---
 function saveGameProgress() {
-    localStorage.setItem('gm_coins', gameState.coins);
-    localStorage.setItem('gm_pph', gameState.pph);
-    localStorage.setItem('gm_level', gameState.level);
-    localStorage.setItem('gm_lastClaim', gameState.lastDailyClaim);
+    LocalStorage.setItem('gm_coins', gameState.coins);
+    LocalStorage.setItem('gm_pph', gameState.pph);
+    LocalStorage.setItem('gm_level', gameState.level);
+    LocalStorage.setItem('gm_lastClaim', gameState.lastDailyClaim);
 }
 
 function loadGameProgress() {
-    if(localStorage.getItem('gm_coins')) gameState.coins = parseFloat(localStorage.getItem('gm_coins'));
-    if(localStorage.getItem('gm_pph')) gameState.pph = parseInt(localStorage.getItem('gm_pph'));
-    if(localStorage.getItem('gm_level')) gameState.level = parseInt(localStorage.getItem('gm_level'));
-    if(localStorage.getItem('gm_lastClaim')) gameState.lastDailyClaim = parseInt(localStorage.getItem('gm_lastClaim'));
-    updateDOMDisplay();
-}
-// --- Auto-Mining & Ad Refill System ---
-let autoMiningInterval = null;
-function stopAutoMining() {
-    gameState.isAutoMiningActive = false;
-    toggleBtn.innerText = "Auto-Mining: OFF";
-    toggleBtn.classList.remove('active'); // Glow effect hat jayega
-    clearInterval(autoMiningInterval);
-}
-const toggleBtn = document.getElementById('toggle-mining-btn');
-
-// Naya clean event listener
-toggleBtn.addEventListener('click', () => {
-    gameState.isAutoMiningActive = !gameState.isAutoMiningActive;
-
-    if (gameState.isAutoMiningActive) {
-        toggleBtn.innerText = "Auto-Mining: ON";
-        toggleBtn.classList.add('active'); // Glow effect ON
-        
-        clearInterval(autoMiningInterval);
-        autoMiningInterval = setInterval(() => {
-            if (gameState.energy > 0) {
-                gameState.coins += 1;
-                gameState.energy -= 1;
-                updateDOMDisplay();
-            } else {
-                stopAutoMining();
-                alert("Energy depleted! Auto-Mining stopped.");
-            }
-        }, 500);
-    } else {
-        stopAutoMining();
-    }
-});
-// 1. Rank Buttons ka logic (Toggle active class)
-const rankButtons = document.querySelectorAll('.rank-btn');
-
-rankButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        // Pehle sabse 'active' hatao
-        document.querySelector('.rank-btn.active').classList.remove('active');
-        // Phir clicked button par 'active' lagao
-        this.classList.add('active');
-    });
-});
-
-// 2. Score update karne ka function (Jab bhi user click karega)
-function updateLiveScore(newScore) {
-    const scoreElement = document.getElementById('current-score');
-    if (scoreElement) {
-        scoreElement.innerText = newScore.toLocaleString();
-    }
+    If(localStorage.getItem('gm_coins')) gameState.coins = parseFloat(localStorage.getItem('gm_coins'));
+    If(localStorage.getItem('gm_pph')) gameState.pph = parseInt(localStorage.getItem('gm_pph'));
+    If(localStorage.getItem('gm_level')) gameState.level = parseInt(localStorage.getItem('gm_level'));
+    If(localStorage.getItem('gm_lastClaim')) gameState.lastDailyClaim = parseInt(localStorage.getItem('gm_lastClaim'));
+    UpdateDOMDisplay();
 }
