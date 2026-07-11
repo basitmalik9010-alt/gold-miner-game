@@ -1,4 +1,3 @@
-const AdController = window.AdsGram.init({ blockId: "38024" });
 window.addEventListener('load', () => {
     console.log("Game Loaded!"); // Agar ye console mein dikhe, to script chal rahi hai
     
@@ -162,25 +161,35 @@ function initMiningEngine() {
         }
     });
 
-// Real AdsGram Integration Setup
+// Real AdsGram Integration Setup (Safe Method)
     document.getElementById('watch-ad-btn-1').addEventListener('click', () => {
         const adButton = document.getElementById('watch-ad-btn-1');
         adButton.disabled = true;
         adButton.innerText = "⏳ Loading Ad...";
         
-        AdController.show().then((result) => {
-            gameState.coins += 5000;
+        try {
+            // Click hone par safe initialization
+            const AdController = window.AdsGram.init({ blockId: "38024" });
+            
+            AdController.show().then((result) => {
+                gameState.coins += 5000;
+                adButton.disabled = false;
+                adButton.innerText = "⚡ Launch Ad Stream";
+                alert("Success: +5,000 Coins added to your global reserve!");
+                checkLevelUpCondition();
+                updateDOMDisplay();
+            }).catch((result) => {
+                adButton.disabled = false;
+                adButton.innerText = "⚡ Launch Ad Stream";
+                alert("Ad poora nahi dekha gaya, isliye reward nahi mila.");
+                console.log("AdsGram Error:", result);
+            });
+        } catch (error) {
             adButton.disabled = false;
             adButton.innerText = "⚡ Launch Ad Stream";
-            alert("Success: +5,000 Coins added to your global reserve!");
-            checkLevelUpCondition();
-            updateDOMDisplay();
-        }).catch((result) => {
-            adButton.disabled = false;
-            adButton.innerText = "⚡ Launch Ad Stream";
-            alert("Ad poora nahi dekha gaya, isliye reward nahi mila.");
-            console.log("AdsGram Error:", result);
-        });
+            alert("Ad network load nahi ho paya. Kripya thodi der baad prayas karein.");
+            console.error("AdsGram Initialization Error:", error);
+        }
     });
 }
 
