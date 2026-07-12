@@ -1,4 +1,4 @@
-window.addEventListener('load', () => {
+Window.addEventListener('load', () => {
     console.log("Game Loaded!"); 
     
     const nameElement = document.getElementById('user-name');
@@ -32,73 +32,6 @@ let gameState = {
     lastDailyClaim: 0,
     isAutoMiningActive: false
 };
-
-// --- HARDCORE AUTOMATIC LOCAL TIME COMBO SYSTEM VARIABLES ---
-const allAvailableCards = ["btn-buy-p2p", "btn-buy-node", "btn-buy-aibot", "btn-buy-btcfarm", "btn-buy-meme", "btn-buy-staking", "btn-buy-web3", "btn-buy-liquidity", "btn-buy-layer2", "btn-buy-meta"];
-let dailyComboSecret = [];
-let userFoundCombo = JSON.parse(localStorage.getItem('userFoundComboLocal')) || [];
-let isComboClaimed = localStorage.getItem('isComboClaimedLocal') === 'true';
-let lastComboDate = localStorage.getItem('lastComboDateLocal') || "";
-
-function getLocalPlayerDate() {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-}
-
-function seededRandom(seed) {
-    const x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-}
-
-function generateDailyCombo() {
-    const currentDate = getLocalPlayerDate();
-    
-    if (currentDate !== lastComboDate) {
-        userFoundCombo = [];
-        isComboClaimed = false;
-        lastComboDate = currentDate;
-        localStorage.setItem('userFoundComboLocal', JSON.stringify(userFoundCombo));
-        localStorage.setItem('isComboClaimedLocal', 'false');
-        localStorage.setItem('lastComboDateLocal', currentDate);
-        resetComboUI();
-    }
-
-    let seed = parseInt(currentDate.split('-').join(''), 10);
-    let tempCards = [...allAvailableCards];
-    dailyComboSecret = [];
-    
-    for (let i = 0; i < 3; i++) {
-        let r = seededRandom(seed + i);
-        let index = Math.floor(r * tempCards.length);
-        dailyComboSecret.push(tempCards[index]);
-        tempCards.splice(index, 1);
-    }
-}
-
-function resetComboUI() {
-    for(let i=0; i<3; i++) {
-        const slot = document.getElementById(`combo-slot-${i}`);
-        if(slot) {
-            slot.innerText = "❓";
-            slot.style.border = "2px dashed #4a5a80";
-            slot.style.background = "#1a2235";
-        }
-    }
-}
-
-function updateComboVisualsSuccess() {
-    for(let i=0; i<3; i++) {
-        const slot = document.getElementById(`combo-slot-${i}`);
-        if(slot) {
-            slot.innerText = "👑";
-            slot.style.border = "2px solid #ffcc00";
-            slot.style.background = "rgba(255, 204, 0, 0.2)";
-        }
-    }
-}
-
-// Global scope check initialization
-generateDailyCombo();
 
 // --- VENTURES MATRIX REVENUE DEFINITIONS (10-20 Configuration) ---
 const ventureUpgrades = {
@@ -332,7 +265,7 @@ function stopAutoMining() {
     clearInterval(autoMiningInterval);
 }
 
-// --- VENTURES MARKET ENGINE WITH HARDCORE COMBO CHECK ---
+// --- VENTURES MARKET ENGINE ---
 function initUpgradesMarket() {
     Object.keys(ventureUpgrades).forEach(key => {
         const upgrade = ventureUpgrades[key];
@@ -348,10 +281,6 @@ function initUpgradesMarket() {
                     btn.innerText = `Cost: ${upgrade.cost.toLocaleString()} 🪙`;
                     
                     alert(`Purchase Confirmed! PPH production enhanced by +${upgrade.pphReward}`);
-                    
-                    // Trigger Hardcore Daily Combo Verification Engine
-                    checkCardForDailyCombo(upgrade.id);
-                    
                     updateDOMDisplay();
                 } else {
                     alert("Deficit: Insufficient coin liquidity to purchase upgrade.");
@@ -359,51 +288,6 @@ function initUpgradesMarket() {
             });
         }
     });
-}
-
-// --- THE HARDCORE COMBO CHECK ENGINE LOGIC ---
-function checkCardForDailyCombo(cardId) {
-    // Ye safety check hai taaki game freeze na ho
-    const slotElement0 = document.getElementById('combo-slot-0');
-    if (!slotElement0) return; 
-
-    generateDailyCombo();
-    if (isComboClaimed) return;
-
-    // RULE 1: Agar card galat hai (secret combo ka hissa nahi hai) -> PROGRESS TOTAL RESET!
-    if (!dailyComboSecret.includes(cardId)) {
-        if (userFoundCombo.length > 0) {
-            userFoundCombo = [];
-            localStorage.setItem('userFoundComboLocal', JSON.stringify(userFoundCombo));
-            resetComboUI();
-            alert("❌ WRONG CARD! Aapka combo break ho gaya aur progress reset ho gayi! Fir se 3 sahi cards dhoondhein.");
-        }
-        return;
-    }
-
-    // RULE 2: Agar sahi card hai, aur user ne is turn mein pehle select nahi kiya
-    if (dailyComboSecret.includes(cardId) && !userFoundCombo.includes(cardId)) {
-        userFoundCombo.push(cardId);
-        localStorage.setItem('userFoundComboLocal', JSON.stringify(userFoundCombo));
-        
-        // Background track safe lock status update on UI
-        const currentSlotIndex = userFoundCombo.length - 1;
-        const slotElement = document.getElementById(`combo-slot-${currentSlotIndex}`);
-        if (slotElement) {
-            slotElement.innerText = "🔒"; 
-            slotElement.style.border = "2px solid #22c55e";
-        }
-        
-        // Jackpot Unlocker Condition
-        if (userFoundCombo.length === 3) {
-            isComboClaimed = true;
-            localStorage.setItem('isComboClaimedLocal', 'true');
-            gameState.coins += 5000000;
-            updateComboVisualsSuccess();
-            alert("🎉 TITANIUM LEVEL SOLVED! Aapne Daily Combo dhoondh liya! +5,000,000 Coins credited! 👑");
-            updateDOMDisplay();
-        }
-    }
 }
 
 // --- AUTO RUN TIMERS CONTROL HUB ---
@@ -514,10 +398,39 @@ function controlBackgroundLoop() {
     }
 }
 
-// --- AUDIO EFFECT CHANNELS ROUTER ---
 function triggerAudioEffect(type) {
     if (type === 'tap' && gameState.tapSoundActive) {
         const tapPlayer = document.getElementById('tap-audio-player');
         if(tapPlayer) {
             tapPlayer.currentTime = 0;
-            tapPlayer.play().catch(() =>
+            tapPlayer.play().catch(() => {});
+        }
+    }
+}
+
+function initRankButtons() {
+    const rankButtons = document.querySelectorAll('.rank-btn');
+    rankButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const activeBtn = document.querySelector('.rank-btn.active');
+            if(activeBtn) activeBtn.classList.remove('active');
+            this.classList.add('active');
+        });
+    });
+}
+
+// --- LOCAL STORAGE PERSISTENCE SYSTEMS ---
+function saveGameProgress() {
+    localStorage.setItem('gm_coins', gameState.coins);
+    localStorage.setItem('gm_pph', gameState.pph);
+    localStorage.setItem('gm_level', gameState.level);
+    localStorage.setItem('gm_lastClaim', gameState.lastDailyClaim);
+}
+
+function loadGameProgress() {
+    if(localStorage.getItem('gm_coins')) gameState.coins = parseFloat(localStorage.getItem('gm_coins'));
+    if(localStorage.getItem('gm_pph')) gameState.pph = parseInt(localStorage.getItem('gm_pph'));
+    if(localStorage.getItem('gm_level')) gameState.level = parseInt(localStorage.getItem('gm_level'));
+    if(localStorage.getItem('gm_lastClaim')) gameState.lastDailyClaim = parseInt(localStorage.getItem('gm_lastClaim'));
+    updateDOMDisplay();
+}
